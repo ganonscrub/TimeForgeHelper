@@ -152,7 +152,7 @@ function cookieToggle(){
 }
 
 // don't run if we're on the login page
-if ( location.href.indexOf( "timeforge.com/site/" == -1 )
+if ( location.href.indexOf( "timeforge.com/site/" ) == -1 )
 {
 	// if this is the landing page after logging in
 	if ( location.href.indexOf( "timeforge.com/Scheduler/sa/index.html" ) != -1 )
