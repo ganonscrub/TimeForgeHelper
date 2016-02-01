@@ -71,8 +71,7 @@ function calculateWeeklyTotals(){
 	
 	daysRow.appendChild( totalTd );
 	
-	for ( var i = 0; i < table.children[0].children.length - 2; i++ )
-	{
+	for ( var i = 0; i < table.children[0].children.length - 2; i++ ){
 		var totals = table.children[0].children[2+i].getElementsByClassName( "dailyTotal" );
 		var week = 0;
 		for ( var j = 0; j < totals.length; j++ )
@@ -152,25 +151,19 @@ function cookieToggle(){
 }
 
 // don't run if we're on the login page
-if ( location.href.indexOf( "timeforge.com/site/" ) == -1 )
-{
+if ( location.href.indexOf( "timeforge.com/site/" ) == -1 ){
 	// if this is the landing page after logging in
-	if ( location.href.indexOf( "timeforge.com/Scheduler/sa/index.html" ) != -1 )
-	{
+	if ( location.href.indexOf( "timeforge.com/Scheduler/sa/index.html" ) != -1 ){
 		// if the script has not been run and the cookie is not set
-		if ( !jumpCookieExists() )
-		{
+		if ( !jumpCookieExists() ){
 			document.cookie = "jumpToCal=false";
 			console.log( "jumpToCal not found; adding and setting default" );
 		}
-		else
-		{
-			if ( !jumpCookieIsTrue() )
-			{
+		else{
+			if ( !jumpCookieIsTrue() ){
 				console.log( "jumpToCal is false, staying on page" );
 			}
-			else
-			{
+			else{
 				console.log( "jumpToCal is true, going to calendar" );
 				console.log ( "WEEEE" );
 				location.href = "/Scheduler/sa/employeeSchedules.html"
@@ -180,8 +173,7 @@ if ( location.href.indexOf( "timeforge.com/site/" ) == -1 )
 		addPickUpShiftsLinkMainPage();
 		addCheckBox();
 	}
-	else
-	{
+	else{
 		calculateDailyTotals();
 		calculateWeeklyTotals();
 		addPickUpShiftsLink();
