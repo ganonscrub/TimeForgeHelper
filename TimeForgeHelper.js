@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         TimeForge Helper
 // @namespace    ganonscrub_script
-// @version      0.2
+// @version      0.3
 // @description  Makes TimeForge slightly less terrible
 // @author       ganonscrub
-// @include      *timeforge.com/*employeeSchedules*
+// @include      *timeforge.com/*
 // @grant        none
 // @updateURL	 https://raw.githubusercontent.com/ganonscrub/TimeForgeHelper/master/TimeForgeHelper.js
 // ==/UserScript==
@@ -71,7 +71,7 @@ function calculateWeeklyTotals(){
 	
 	daysRow.appendChild( totalTd );
 	
-	for ( var i = 0; i < 6; i++ )
+	for ( var i = 0; i < table.children[0].children.length - 2; i++ )
 	{
 		var totals = table.children[0].children[2+i].getElementsByClassName( "dailyTotal" );
 		var week = 0;
@@ -105,6 +105,86 @@ function addPickUpShiftsLink(){
 	lastTd.innerHTML = "<div class='links2'><ul><li><div><a href='/Scheduler/sa/employeeGivenUpShifts.html'>Pick Up Shifts</a></div></li></ul></div>";
 }
 
-calculateDailyTotals();
-calculateWeeklyTotals();
-addPickUpShiftsLink();
+function addPickUpShiftsLinkMainPage(){
+	var box = document.getElementById( "schedulesBox" );
+	var li = document.createElement( "li" );
+	li.innerHTML = "<a href='/Scheduler/sa/employeeGivenUpShifts.html'>Pick Up Shifts</a>";
+	box.appendChild( li );
+}
+
+function addCheckBox(){
+	var list = document.getElementsByClassName( "rightmenu" )[0];
+	var a = document.createElement( "a" );
+	a.href = location.href + "#";
+	a.id = "cookieToggleButton";
+	
+	if ( jumpCookieIsTrue() )
+		a.innerHTML = "Jump OFF";
+	else
+		a.innerHTML = "Jump ON";
+	
+	list.insertBefore( a, list.firstChild );
+	
+	a.addEventListener( "click", cookieToggle );
+}
+
+function jumpCookieExists(){
+	return document.cookie.indexOf( "jumpToCal=" ) != -1;
+}
+
+function jumpCookieIsTrue(){
+	return document.cookie.indexOf( "jumpToCal=true" ) != -1;
+}
+
+function cookieToggle(){
+	var button = document.getElementById( "cookieToggleButton" );
+	if ( jumpCookieIsTrue() ){
+		document.cookie = "jumpToCal=false";
+		button.innerHTML = "Jump ON";
+		console.log( "jumpToCal set to false");
+	}
+	else{
+		document.cookie = "jumpToCal=true";
+		button.innerHTML = "Jump OFF";
+		console.log( "jumpToCal set to true" );
+		location.href = "/Scheduler/sa/employeeSchedules.html";
+	}
+}
+
+// don't run if we're on the login page
+if ( location.href.indexOf( "timeforge.com/site/" == -1 )
+{
+	// if this is the landing page after logging in
+	if ( location.href.indexOf( "timeforge.com/Scheduler/sa/index.html" ) != -1 )
+	{
+		// if the script has not been run and the cookie is not set
+		if ( !jumpCookieExists() )
+		{
+			document.cookie = "jumpToCal=false";
+			console.log( "jumpToCal not found; adding and setting default" );
+		}
+		else
+		{
+			if ( !jumpCookieIsTrue() )
+			{
+				console.log( "jumpToCal is false, staying on page" );
+			}
+			else
+			{
+				console.log( "jumpToCal is true, going to calendar" );
+				console.log ( "WEEEE" );
+				location.href = "/Scheduler/sa/employeeSchedules.html"
+			}
+		}
+		
+		addPickUpShiftsLinkMainPage();
+		addCheckBox();
+	}
+	else
+	{
+		calculateDailyTotals();
+		calculateWeeklyTotals();
+		addPickUpShiftsLink();
+		addCheckBox();
+	}
+}
